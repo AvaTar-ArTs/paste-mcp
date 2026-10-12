@@ -19509,3 +19509,9 @@ _**Agent (default)**_
 <think><details><summary>Thought Process</summary>
 The tools/list call succeeded despite an initialization parse failure. A later curl request may have reused the connection.
 </details></think>
+
+---
+
+_**User**_
+
+begin at the start of ur conversation, deepdive audit review analyze comprehend and compare as you go.. creating memory like save checkpoints points to reference everything you might have missed and then compare wth the pervious selves as you review your past 
