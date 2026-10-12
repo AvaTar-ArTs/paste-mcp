@@ -3745,4 +3745,97 @@ _**Agent (gpt-5.6-sol 2026-10-12 05:35:28Z)**_
   "timeout_ms": 120000
 }
 ```
+```json
+{
+  "message": "Wait completed.",
+  "timed_out": false
+}
+```
 </details></tool-use>
+
+_**Agent (gpt-5.6-sol 2026-10-12 05:35:49Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="wait_agent"><details>
+<summary>Tool use: **wait_agent**</summary>
+```json
+{
+  "timeout_ms": 120000
+}
+```
+```json
+{
+  "message": "Wait completed.",
+  "timed_out": false
+}
+```
+</details></tool-use>
+
+_**Agent (gpt-5.6-sol 2026-10-12 05:35:52Z)**_
+
+<tool-use data-tool-type="unknown" data-tool-name="wait_agent"><details>
+<summary>Tool use: **wait_agent**</summary>
+```json
+{
+  "timeout_ms": 120000
+}
+```
+```json
+{
+  "message": "Wait completed.",
+  "timed_out": false
+}
+```
+</details></tool-use>
+
+_**Agent (gpt-5.6-sol 2026-10-12 05:36:12Z)**_
+
+The agent research and no-skill tests are complete. They confirmed that `paste-cleanup` needs its own reference skill: without it, agents invented unsupported Paste features such as cursors, subscriptions, trash, atomic moves, shared-board writes, and guaranteed deletion undo.
+
+## Design section 1: architecture and authority
+
+The system should have four layers:
+
+1. **Runtime cleanup engine**
+   - Lives in `paste-mcp`.
+   - Opportunistically classifies items encountered during normal operations.
+   - Executes deterministic saved policies.
+   - Owns authorization, retries, journaling, verification, and partial-failure recovery.
+
+2. **`paste-cleanup` agent**
+   - Runs only when invoked or delegated; it is not a daemon.
+   - Audits, explains findings, builds cleanup plans, requests approval, monitors execution, and summarizes results.
+   - Receives redacted metadata through narrow cleanup tools—not unrestricted raw Paste access.
+
+3. **`paste-cleanup` skill**
+   - Teaches the exact Paste contract, supported operations, search ceiling, private-board rules, truthful undo limitations, and what/how/why reporting.
+   - Corrects the unsupported assumptions exposed by baseline testing.
+
+4. **Thin repository instructions**
+   - Route cleanup work to the approved design and skill.
+   - Keep detailed policy out of `AGENTS.md`.
+
+Proposed MCP surface:
+
+- `audit_paste_cleanup`
+- `plan_paste_cleanup`
+- `apply_paste_cleanup`
+- `undo_paste_cleanup`
+- `paste_cleanup_status`
+
+Authority defaults:
+
+| Action | Background authority |
+|---|---|
+| Classify and redact | Automatic |
+| Apply an enabled organizational rule | Automatic |
+| Pin to a canonical private board | Automatic under saved policy |
+| Move | Add destination → verify → remove source → verify |
+| Rename | Saved normalization rule or approved plan |
+| Edit item content | Explicit approval |
+| Quarantine | Saved policy with retention |
+| Hard deletion | Fresh exact-target confirmation only |
+| Shared-board mutation | Denied |
+
+Before mutation tools are exposed, the server must bind explicitly to `127.0.0.1` and separate read, organizational, and destructive capabilities.
+
+Does this architecture and authority model look right before I present the journaling, changelog, and undo design?
