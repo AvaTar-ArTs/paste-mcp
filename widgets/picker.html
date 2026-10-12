@@ -1,0 +1,81 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  :root {
+    --bg: #fafafa;
+    --fg: #111;
+    --muted: #666;
+    --line: #eee;
+    --hover: #f0f0f0;
+    --warn: #8a1f1f;
+  }
+  :root.dark {
+    color-scheme: dark;
+    --bg: #161616;
+    --fg: #eee;
+    --muted: #9a9a9a;
+    --line: #2a2a2a;
+    --hover: #222;
+    --warn: #f0a8a8;
+  }
+  body { font: 14px system-ui, sans-serif; margin: 0; background: var(--bg); color: var(--fg); }
+  .note { padding: 10px 14px; color: var(--muted); border-bottom: 1px solid var(--line); }
+  .warn { color: var(--warn); }
+  ul { list-style: none; padding: 0; margin: 0; max-height: 320px; overflow-y: auto; }
+  li { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid var(--line); }
+  li:hover { background: var(--hover); }
+  .sub { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .empty { padding: 16px 14px; color: var(--muted); }
+</style>
+<div class="note" id="note">Pick an item. Previews with secrets are already redacted.</div>
+<ul id="list"></ul>
+<script type="module">
+/*__EXT_APPS_BUNDLE__*/
+const { App } = globalThis.ExtApps;
+(async () => {
+  const app = new App({ name: "PastePicker", version: "0.1.0" }, {});
+  const ul = document.getElementById("list");
+  const note = document.getElementById("note");
+
+  const applyTheme = (ctx) => {
+    document.documentElement.classList.toggle("dark", ctx?.theme === "dark");
+  };
+
+  app.ontoolresult = ({ content }) => {
+    const payload = JSON.parse(content[0].text);
+    const items = payload.items ?? [];
+    note.textContent = payload.note || "Pick an item.";
+    ul.innerHTML = "";
+    if (!items.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = payload.error || "No items.";
+      ul.append(empty);
+      return;
+    }
+    for (const it of items) {
+      const li = document.createElement("li");
+      const title = document.createElement("div");
+      title.textContent = it.label;
+      const sub = document.createElement("div");
+      sub.className = "sub" + (it.redacted ? " warn" : "");
+      sub.textContent = it.sub ?? "";
+      li.append(title, sub);
+      li.addEventListener("click", () => {
+        app.sendMessage({
+          role: "user",
+          content: [{
+            type: "text",
+            text: `Selected Paste ${it.kind}: ${it.id}${it.redacted ? " (preview redacted)" : ""}`,
+          }],
+        });
+      });
+      ul.append(li);
+    }
+  };
+
+  await app.connect();
+  applyTheme(app.getHostContext?.());
+  app.onhostcontextchanged = applyTheme;
+})();
+</script>
