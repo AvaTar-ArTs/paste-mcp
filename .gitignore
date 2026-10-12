@@ -6,3 +6,6 @@ dist/
 .tmp/
 *.log
 .DS_Store
+
+# Generated session transcripts can contain private conversation material.
+.specstory/history/
