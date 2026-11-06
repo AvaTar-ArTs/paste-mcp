@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.tmp/
+*.log
+.DS_Store
+
+# Generated session transcripts can contain private conversation material.
+.specstory/history/
+
+# New local transcript exports (private) - never commit
+.specstory.zip
+specsotry-claude-code.txt
+__pycache__/
+*.pyc

@@ -1,0 +1,30 @@
+{
+	"pattern": "sequential",
+	"name": "innate-paste-session",
+	"workflow_id": "paste-mcp-innate-2026-10-12",
+	"steps": [
+		"workspace-ecosystem-audit",
+		"using-superpowers",
+		"ralph-self-audit",
+		"task-work",
+		"verification-before-completion",
+		"self-evolving-memory"
+	],
+	"handoff_contract": {
+		"workflow_id": "paste-mcp-innate-2026-10-12",
+		"constraints": [
+			"no secrets in chat/Paste/Engram memory",
+			"eza not ls",
+			"do not scan all of home",
+			"compaction is a previous self",
+			"getengram != gentle-engram"
+		],
+		"upstream_artifacts": [
+			"docs/SESSION_AUDIT_2026-10-12.md",
+			"docs/learned-context.md",
+			"docs/conversation-link-map.md"
+		]
+	},
+	"retry": { "named_model_subagents": false, "parent_inherit": true },
+	"timeouts": { "hook_seconds": 5 }
+}
