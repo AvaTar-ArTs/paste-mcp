@@ -1,0 +1,25 @@
+{
+	"version": 1,
+	"hooks": {
+		"beforeReadFile": [
+			{
+				"command": ".cursor/hooks/paste-safety.py",
+				"failClosed": true,
+				"timeout": 5
+			}
+		],
+		"beforeMCPExecution": [
+			{
+				"command": ".cursor/hooks/paste-safety.py",
+				"failClosed": true,
+				"timeout": 5
+			}
+		],
+		"afterMCPExecution": [
+			{
+				"command": ".cursor/hooks/paste-safety.py",
+				"timeout": 5
+			}
+		]
+	}
+}
