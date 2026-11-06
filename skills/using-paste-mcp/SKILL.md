@@ -34,5 +34,5 @@ Optional picker in this repo: `npm start` → `http://127.0.0.1:3847/mcp` tools 
 
 - Echo clipboard secrets into the transcript, Paste titles, Engram `append_messages`, or git.
 - `delete_item` / `delete_pinboard` without an explicit user confirm, then the tool’s own `confirm: true`.
-- Scan all of `~/` to “find” Paste data. Paste MCP is local HTTP (~39725).
+- Scan all of `~/` to “find” Paste data. Paste MCP: built-in Paste.app server is local HTTP :39752 (standalone @pasteapp/mcp used ~39725).
 - Treat Gentleman/`gentle-engram` or this repo as the official Paste server (`pasteapp/paste-mcp`).
