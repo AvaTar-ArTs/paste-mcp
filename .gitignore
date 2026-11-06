@@ -13,3 +13,5 @@ dist/
 # New local transcript exports (private) - never commit
 .specstory.zip
 specsotry-claude-code.txt
+__pycache__/
+*.pyc
